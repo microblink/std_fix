@@ -1,0 +1,31 @@
+/**
+* Copyright (c) Microblink Ltd. All rights reserved.
+*
+* ANY UNAUTHORIZED USE OR SALE, DUPLICATION, OR DISTRIBUTION
+* OF THIS PROGRAM OR ANY OF ITS PARTS, IN SOURCE OR BINARY FORMS,
+* WITH OR WITHOUT MODIFICATION, WITH THE PURPOSE OF ACQUIRING
+* UNLAWFUL MATERIAL OR ANY OTHER BENEFIT IS PROHIBITED!
+* THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
+* REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
+*/
+//------------------------------------------------------------------------------
+#pragma once
+
+#include <bit>
+
+#if defined( __ANDROID__ ) || defined( __APPLE__ )
+//------------------------------------------------------------------------------
+namespace std
+{
+//------------------------------------------------------------------------------
+
+template < typename Target >
+constexpr auto bit_cast ( auto const &       source ) noexcept { return __builtin_bit_cast( Target, source );              }
+#if defined( __ANDROID__ )
+constexpr auto bit_width( auto         const value  ) noexcept { return ( value == 0 ) ? 0 : std::__bit_log2( value ) + 1; }
+#endif // Android
+
+//------------------------------------------------------------------------------
+} // namespace std
+//------------------------------------------------------------------------------
+#endif // Android || Apple

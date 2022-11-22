@@ -1,0 +1,62 @@
+/**
+* @file concepts
+*
+* Copyright (c)2020 Microblink Ltd. All rights reserved.
+*
+* ANY UNAUTHORIZED USE OR SALE, DUPLICATION, OR DISTRIBUTION
+* OF THIS PROGRAM OR ANY OF ITS PARTS, IN SOURCE OR BINARY FORMS,
+* WITH OR WITHOUT MODIFICATION, WITH THE PURPOSE OF ACQUIRING
+* UNLAWFUL MATERIAL OR ANY OTHER BENEFIT IS PROHIBITED!
+* THIS PROGRAM IS PROTECTED BY COPYRIGHT LAWS AND YOU MAY NOT
+* REVERSE ENGINEER, DECOMPILE, OR DISASSEMBLE IT.
+*/
+
+#pragma once
+
+// MSVC, GCC and LLVM >= 13 have the concepts library
+// LLVM <= 12 has the concepts header, but not fully implemented
+
+// No support for entirely conceptless STLs
+#include <concepts>
+
+#if defined( _MSVC_STL_VERSION ) || defined( __GLIBCXX__ ) || ( defined( _LIBCPP_VERSION ) && _LIBCPP_VERSION >= 13000 )
+// we have a full (or at least MB-sufficient) concepts implementation 
+#else
+
+#include <type_traits>
+//------------------------------------------------------------------------------
+namespace std
+{
+//------------------------------------------------------------------------------
+
+/// \note libc++ 11 and 12 (and Android NDK r25b) have std::same_as implemented
+/// in their concepts header.
+///                                         (16.08.2022. Nenad Miksa)
+
+template<class _From, class _To>
+concept convertible_to =
+  is_convertible_v<_From, _To> &&
+  requires {
+    static_cast<_To>(declval<_From>());
+  };
+
+template<class _Dp, class _Bp>
+concept derived_from =
+  is_base_of_v<_Bp, _Dp> &&
+  is_convertible_v<const volatile _Dp*, const volatile _Bp*>;
+
+template<class _Tp>
+concept destructible = is_nothrow_destructible_v<_Tp>;
+
+template<class _Tp, class... _Args>
+concept constructible_from =
+    destructible<_Tp> && is_constructible_v<_Tp, _Args...>;
+
+template<class _Tp>
+concept integral = is_integral_v<_Tp>;
+
+//------------------------------------------------------------------------------
+} // namespace std
+//------------------------------------------------------------------------------
+
+#endif // deficient concepts
