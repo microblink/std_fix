@@ -16,17 +16,17 @@
 
 static_assert
 (
-    std::bit_cast( 0.f ) == 0U
+    std::bit_cast< int >( 0.f ) == 0
 );
 
 static_assert
 (
-    std::bit_width( 127 ) == 8U
+    std::bit_width( 127U ) == 7U
 );
 
 static_assert
 (
-     std::convertible_to<          int, float >
+     std::convertible_to<          int, float > &&
     !std::convertible_to< char const *, float >
 );
 
@@ -49,7 +49,7 @@ static_assert
 
 static_assert
 (
-     std::integral< int   >
+     std::integral< int   > &&
     !std::integral< float >
 );
 
