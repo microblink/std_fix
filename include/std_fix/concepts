@@ -12,14 +12,15 @@
 
 #pragma once
 
-// MSVC, GCC and LLVM >= 13 have the concepts library
-// LLVM <= 12 has the concepts header, but not fully implemented
+#include "fix_version"
 
 // No support for entirely conceptless STLs
 #include <concepts>
 
-#if defined( _MSVC_STL_VERSION ) || defined( __GLIBCXX__ ) || ( defined( _LIBCPP_VERSION ) && _LIBCPP_VERSION >= 13000 )
-// we have a full (or at least MB-sufficient) concepts implementation 
+// https://en.cppreference.com/w/cpp/feature_test
+
+#if __cpp_lib_concepts >= 202002L
+// we have a full C++20 concepts implementation 
 #else
 
 #include <type_traits>
@@ -29,7 +30,7 @@ namespace std
 //------------------------------------------------------------------------------
 
 /// \note libc++ 11 and 12 (and Android NDK r25b) have std::same_as implemented
-/// in their concepts header.
+/// in their concepts header and we expect this as a minimum.
 ///                                         (16.08.2022. Nenad Miksa)
 
 template<class _From, class _To>
@@ -38,21 +39,26 @@ concept convertible_to =
   requires {
     static_cast<_To>(declval<_From>());
   };
+#define STDFIX_CONCEPT_convertible_to 202002L
 
 template<class _Dp, class _Bp>
 concept derived_from =
   is_base_of_v<_Bp, _Dp> &&
   is_convertible_v<const volatile _Dp*, const volatile _Bp*>;
+#define STDFIX_CONCEPT_derived_from 202002L
 
 template<class _Tp>
 concept destructible = is_nothrow_destructible_v<_Tp>;
+#define STDFIX_CONCEPT_destructible 202002L
 
 template<class _Tp, class... _Args>
 concept constructible_from =
     destructible<_Tp> && is_constructible_v<_Tp, _Args...>;
+#define STDFIX_CONCEPT_constructible_from 202002L
 
 template<class _Tp>
 concept integral = is_integral_v<_Tp>;
+#define STDFIX_CONCEPT_integral 202002L
 
 //------------------------------------------------------------------------------
 } // namespace std

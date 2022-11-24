@@ -9,38 +9,16 @@
 * 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-//------------------------------------------------------------------------------
+
 #pragma once
 
-#include "fix_version"
-
-#include <bit>
-//------------------------------------------------------------------------------
-namespace std
-{
 //------------------------------------------------------------------------------
 
-// https://en.cppreference.com/w/cpp/feature_test
+// Counterpart to the std <version> header. Providing a single/'global' version
+// value (aking to __cplusplus) instead of more fine grained version values
+// (akin to __cpp_lib_*) in order not to have to provide entire sets of
+// features behind macros such as __cpp_lib_concepts.
 
-#if __cpp_lib_bit_cast < 201806L
-template < typename Target >
-constexpr auto bit_cast( auto const & source ) noexcept { return __builtin_bit_cast( Target, source ); }
+#define STD_FIX 1
 
-#undef __cpp_lib_bit_cast
-#define __cpp_lib_bit_cast 201806L
-#endif // no bit_cast fix
-
-#if ( __cpp_lib_int_pow2 < 202002L )
-constexpr auto bit_width( auto const value ) noexcept { return ( value == 0 ) ? 0 : std::__bit_log2( value ) + 1; }
-// can do after rest of __cpp_lib_int_pow2 features are implemented as needed
-#if 0
-#undef __cpp_lib_int_pow2
-#define __cpp_lib_int_pow2 202002L
-#else
-#define STDFIX_BIT_bit_width 202002L
-#endif
-#endif // no bit_width fix
-
-//------------------------------------------------------------------------------
-} // namespace std
 //------------------------------------------------------------------------------
