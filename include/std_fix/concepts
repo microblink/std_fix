@@ -60,6 +60,10 @@ template<class _Tp>
 concept integral = is_integral_v<_Tp>;
 #define STDFIX_CONCEPT_integral 202002L
 
+template<class _Tp>
+concept floating_point = is_floating_point_v<_Tp>;
+#define STDFIX_CONCEPT_floating_point 202002L
+
 //------------------------------------------------------------------------------
 } // namespace std
 //------------------------------------------------------------------------------
