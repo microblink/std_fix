@@ -67,7 +67,7 @@ static_assert
     std::input_iterator< std::initializer_list< int >::iterator >
 );
 
-struct S
+struct Triplet
 {
     int a;
     int b;
@@ -76,14 +76,19 @@ struct S
     [[ nodiscard ]] constexpr int sum() const noexcept { return a + b + c; }
 };
 
-constexpr int test_construct_at() {
-    auto * s{ new S };
-    s = std::construct_at( s, 1, 2, 3 );
-    auto result{ s->sum() };
-    delete s;
-    return result;
-}
-
-static_assert( test_construct_at() == 6 );
+// testing std::construct_at
+static_assert
+(
+    []()
+    {
+        union Union {
+            Triplet container;
+            int     storage[3];
+        };
+        Union u;
+        Triplet * t{ std::construct_at< Triplet >( &u.container, 1, 2, 3 ) };
+        return t->sum();
+    }() == 6
+);
 
 //------------------------------------------------------------------------------
