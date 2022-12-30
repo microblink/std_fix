@@ -83,7 +83,7 @@ static_assert
     {
         union Union {
             Triplet container;
-            int     storage[3];
+            char    c;
         };
         Union u;
         Triplet * t{ std::construct_at< Triplet >( &u.container, 1, 2, 3 ) };
