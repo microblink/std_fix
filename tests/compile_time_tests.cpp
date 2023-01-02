@@ -73,6 +73,8 @@ struct Triplet
     int b;
     int c;
 
+    constexpr Triplet( int x, int y, int z ) : a{ x }, b{ y }, c{ z } {}
+
     [[ nodiscard ]] constexpr int sum() const noexcept { return a + b + c; }
 };
 
@@ -84,6 +86,7 @@ static_assert
         union Union {
             Triplet container;
             char    c;
+            constexpr Union() : c{ 0 } {}
         };
         Union u;
         Triplet * t{ std::construct_at< Triplet >( &u.container, 1, 2, 3 ) };
