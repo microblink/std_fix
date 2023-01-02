@@ -64,6 +64,30 @@ template<class _Tp>
 concept floating_point = is_floating_point_v<_Tp>;
 #define STDFIX_CONCEPT_floating_point 202002L
 
+// not a real concept, just to make everything compile
+// for real concept, please see https://en.cppreference.com/w/cpp/iterator/contiguous_iterator
+template< typename T >
+concept contiguous_iterator = requires ( T arg )
+{
+    *arg;
+    &*arg;
+    ++arg;
+    arg++;
+    --arg;
+    arg--;
+    arg += 9;
+    arg -= 9;
+};
+
+// not a real concept, just to make everything compile
+// for real concept, please see https://en.cppreference.com/w/cpp/iterator/contiguous_iterator
+template< typename T >
+concept input_iterator = requires ( T arg )
+{
+    *arg;
+    ++arg;
+    arg++;
+};
 //------------------------------------------------------------------------------
 } // namespace std
 //------------------------------------------------------------------------------
