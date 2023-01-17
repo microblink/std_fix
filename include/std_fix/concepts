@@ -80,7 +80,7 @@ concept contiguous_iterator = requires ( T arg )
 };
 
 // not a real concept, just to make everything compile
-// for real concept, please see https://en.cppreference.com/w/cpp/iterator/contiguous_iterator
+// for real concept, please see https://en.cppreference.com/w/cpp/iterator/input_iterator
 template< typename T >
 concept input_iterator = requires ( T arg )
 {
