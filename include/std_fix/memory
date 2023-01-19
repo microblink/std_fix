@@ -12,13 +12,19 @@
 
 #pragma once
 
+#include <utility>
+
 namespace std
 {
+
+#ifdef __ANDROID__
 
 template< typename T, typename ... Args >
 constexpr T * construct_at( T * p, Args && ... args )
 {
     return new( p ) T{ std::forward< Args >( args ) ... };
 }
+
+#endif
 
 } // namespace std
