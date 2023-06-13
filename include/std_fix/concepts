@@ -20,7 +20,7 @@
 // https://en.cppreference.com/w/cpp/feature_test
 
 #if __cpp_lib_concepts >= 202002L
-// we have a full C++20 concepts implementation 
+// we have a full C++20 concepts implementation
 #else
 
 #include <type_traits>
@@ -88,6 +88,19 @@ concept input_iterator = requires ( T arg )
     *arg;
     ++arg;
     arg++;
+};
+
+template< typename T >
+concept random_access_iterator = requires ( T arg )
+{
+    *arg;
+    ++arg;
+    arg++;
+    --arg;
+    arg--;
+    arg += 9;
+    arg -= 9;
+    arg[ 9 ];
 };
 #endif
 //------------------------------------------------------------------------------
