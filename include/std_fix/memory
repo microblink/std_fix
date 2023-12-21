@@ -12,12 +12,13 @@
 
 #pragma once
 
+#include <memory>
 #include <utility>
 
 namespace std
 {
 
-#ifdef __ANDROID__
+#if defined( __ANDROID__ ) && _LIBCPP_VERSION < 170000
 
 template< typename T, typename ... Args >
 constexpr T * construct_at( T * p, Args && ... args )
